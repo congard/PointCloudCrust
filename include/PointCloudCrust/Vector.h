@@ -58,6 +58,10 @@ public:
         };
     }
 
+    inline static float_n dot(const Vector &v1, const Vector &v2) {
+        return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+    }
+
 public:
     float_n x;
     float_n y;
