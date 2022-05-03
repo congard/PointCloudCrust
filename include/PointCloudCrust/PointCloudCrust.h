@@ -24,9 +24,9 @@ public:
 
     void setPoints(float_n *coords, size_t size, bool copy = true, bool takeOwnership = true);
     inline void setPoints(Points &points) { std::swap(points, m_points); }
-    inline const Points& getPoints() const { return m_points; }
+    inline Points& getPoints() { return m_points; }
 
-    inline const Triangles& getTriangles() const { return m_triangles; }
+    inline Triangles& getTriangles() { return m_triangles; }
 
     inline void reset() { m_triangles = {}; }
 
