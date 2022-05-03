@@ -1,5 +1,7 @@
 #include "PointCloudCrust/PointCloudCrust.h"
 
+#include <vector>
+
 namespace congard::PointCloudCrust {
 void PointCloudCrust::compute() {
     auto n = m_points.size();
@@ -196,5 +198,52 @@ Vector PointCloudCrust::triangleCenter(const Vector &a, const Vector &b, const V
     Vector v = (v1 + v2) / f;
 
     return a + v;
+}
+
+void PointCloudCrust::optimize() {
+    constexpr int indexUnused = -2;
+    constexpr int indexUsed = -1;
+
+    // array that represents used and unused indices
+    std::vector<int> vertexIndices(m_points.size(), indexUnused);
+
+    for (auto [v1, v2, v3] : m_triangles) {
+        vertexIndices[v1] = indexUsed;
+        vertexIndices[v2] = indexUsed;
+        vertexIndices[v3] = indexUsed;
+    }
+
+    int vertexCounter = 0;
+
+    for (int &index : vertexIndices) {
+        if (index == indexUsed) {
+            index = vertexCounter++;
+        }
+    }
+
+    // already optimized
+    if (vertexCounter == m_points.size())
+        return;
+
+    // remove unused vertices
+    auto coords = new float_n[vertexCounter * 3];
+    auto origCoords = m_points.getCoords();
+    int v_i = 0;
+
+    for (int i = 0; i < vertexIndices.size(); ++i) {
+        if (vertexIndices[i] != indexUnused) {
+            memcpy(coords + v_i * 3, origCoords + i * 3, sizeof(float_n) * 3);
+            ++v_i;
+        }
+    }
+
+    m_points = Points(coords, vertexCounter * 3, false, true);
+    
+    // shift indices
+    for (auto &[v1, v2, v3] : m_triangles) {
+        v1 = vertexIndices[v1];
+        v2 = vertexIndices[v2];
+        v3 = vertexIndices[v3];
+    }
 }
 }

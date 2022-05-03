@@ -33,6 +33,8 @@ public:
     void compute();
     void computeRange(float_n begin, float_n end);
 
+    void optimize();
+
 private:
     using limits = std::numeric_limits<float_n>;
 

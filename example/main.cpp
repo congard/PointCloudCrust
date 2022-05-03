@@ -1,6 +1,7 @@
 #include <fstream>
 #include <chrono>
 #include <thread>
+#include <vector>
 
 #include <PointCloudCrust/PointCloudCrust.h>
 
@@ -48,12 +49,17 @@ int main() {
     // single-threaded mode
     // pointCloudCrust.compute();
 
+    pointCloudCrust.optimize();
+
     printf("End, time: %li\n", time() - start);
 
     // print the result in OBJ file format
 
-    for (int i = 0; i < pointCloud.size(); i += 3) {
-        printf("v %f %f %f\n", pointCloud[i], pointCloud[i + 1], pointCloud[i + 2]);
+    auto &points = pointCloudCrust.getPoints();
+
+    for (int i = 0; i < points.size(); ++i) {
+        auto &point = points.getPoint(i);
+        printf("v %f %f %f\n", point.x, point.y, point.z);
     }
 
     for (auto &t : pointCloudCrust.getTriangles()) {
