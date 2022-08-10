@@ -12,6 +12,34 @@ public:
     inline explicit Vector(float_n v): x(v), y(v), z(v) {}
     inline Vector(float_n x, float_n y, float_n z): x(x), y(y), z(z) {}
 
+    inline Vector& operator+=(const Vector &rhs) {
+        x += rhs.x;
+        y += rhs.y;
+        z += rhs.z;
+        return *this;
+    }
+
+    inline Vector& operator-=(const Vector &rhs) {
+        x -= rhs.x;
+        y -= rhs.y;
+        z -= rhs.z;
+        return *this;
+    }
+
+    inline Vector& operator*=(float_n multiplier) {
+        x *= multiplier;
+        y *= multiplier;
+        z *= multiplier;
+        return *this;
+    }
+
+    inline Vector& operator/=(float_n divider) {
+        x /= divider;
+        y /= divider;
+        z /= divider;
+        return *this;
+    }
+
     inline Vector operator+(const Vector &rhs) const {
         return {x + rhs.x, y + rhs.y, z + rhs.z};
     }
