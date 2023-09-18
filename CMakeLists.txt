@@ -4,19 +4,16 @@ project(PointCloudCrust)
 set(CMAKE_CXX_STANDARD 17)
 
 set(PointCloudCrust_SOURCES
-        ${CMAKE_CURRENT_LIST_DIR}/include/PointCloudCrust/PointCloudCrust.h
-        ${CMAKE_CURRENT_LIST_DIR}/include/PointCloudCrust/Vector.h
-        ${CMAKE_CURRENT_LIST_DIR}/include/PointCloudCrust/types.h
-        ${CMAKE_CURRENT_LIST_DIR}/include/PointCloudCrust/Points.h
-        ${CMAKE_CURRENT_LIST_DIR}/src/PointCloudCrust.cpp)
+        include/PointCloudCrust/PointCloudCrust.h
+        include/PointCloudCrust/Vector.h
+        include/PointCloudCrust/types.h
+        include/PointCloudCrust/Points.h
+        src/PointCloudCrust.cpp
+        include/PointCloudCrust/platform.h)
 
-include_directories(${CMAKE_CURRENT_LIST_DIR}/include)
+include_directories(include)
 
 if (PCC_BUILD_SHARED)
-    if (MSVC)
-        set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS true)
-    endif()
-
     add_library(pcc SHARED ${PointCloudCrust_SOURCES})
 elseif (PCC_BUILD_STATIC)
     add_library(pcc STATIC ${PointCloudCrust_SOURCES})
@@ -32,4 +29,8 @@ endif()
 
 if (PCC_DOUBLE_PRECISION)
     add_compile_definitions(POINTCLOUDCRUST_DOUBLE_PRECISION)
+endif()
+
+if (WIN32)
+    target_compile_definitions(pcc PRIVATE PCC_BUILD_LIB)
 endif()

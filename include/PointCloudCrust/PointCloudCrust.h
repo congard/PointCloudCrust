@@ -6,9 +6,10 @@
 #include <mutex>
 
 #include "Points.h"
+#include "platform.h"
 
 namespace congard::PointCloudCrust {
-class PointCloudCrust {
+class PCC_EXPORT PointCloudCrust {
 public:
     struct Triangle {
         int v1;
